@@ -1,19 +1,19 @@
 <div align="center">
 
-![MSPEngine banner](docs/assets/banner.svg)
+![msprex banner](docs/assets/banner.svg)
 
-# MSPEngine
+# msprex
 
 **MSP automation engine — PowerShell-based remote management, scripted deployments, monitoring checks, and client provisioning for managed service providers.**
 
-[![GitHub release](https://img.shields.io/github/v/release/OneByJorah/MSPEngine?color=f97316&label=release&logo=github)](https://github.com/OneByJorah/MSPEngine/releases)
-[![PowerShell Gallery](https://img.shields.io/badge/PowerShell%20Gallery-MSPEngine-009FFD?style=flat-square&logo=powershell&logoColor=white)](https://www.powershellgallery.com/packages/MSPEngine)
+[![GitHub release](https://img.shields.io/github/v/release/OneByJorah/msprex?color=f97316&label=release&logo=github)](https://github.com/OneByJorah/msprex/releases)
+[![PowerShell Gallery](https://img.shields.io/badge/PowerShell%20Gallery-msprex-009FFD?style=flat-square&logo=powershell&logoColor=white)](https://www.powershellgallery.com/packages/msprex)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?color=FFB300&logo=open-source-initiative&logoColor=FFB300)](https://opensource.org/licenses/MIT)
 
 </div>
 
-![MSPEngine screenshot](docs/assets/screenshot.png)
+![msprex screenshot](docs/assets/screenshot.png)
 
 ## What This Is
 
@@ -24,24 +24,24 @@ MSP automation engine — PowerShell-based remote management, scripted deploymen
 ### PowerShell Gallery
 
 ```powershell
-Install-Module -Name MSPEngine -Repository PSGallery
-Import-Module MSPEngine
+Install-Module -Name msprex -Repository PSGallery
+Import-Module msprex
 ```
 
 ### Docker
 
 ```bash
-git clone https://github.com/OneByJorah/MSPEngine.git
-cd MSPEngine
+git clone https://github.com/OneByJorah/msprex.git
+cd msprex
 docker compose up -d
 ```
 
 ### From Source
 
 ```bash
-git clone https://github.com/OneByJorah/MSPEngine.git
-cd MSPEngine
-Import-Module ./MSPEngine/MSPEngine.psd1
+git clone https://github.com/OneByJorah/msprex.git
+cd msprex
+Import-Module ./msprex/msprex.psd1
 ```
 
 ## Features
@@ -69,14 +69,14 @@ Import-Module ./MSPEngine/MSPEngine.psd1
 
 ## Package Badges
 
-[![GitHub release](https://img.shields.io/github/v/release/OneByJorah/MSPEngine?color=f97316&label=release&logo=github)](https://github.com/OneByJorah/MSPEngine/releases)
-[![PowerShell Gallery](https://img.shields.io/badge/PowerShell%20Gallery-MSPEngine-009FFD?style=flat-square&logo=powershell&logoColor=white)](https://www.powershellgallery.com/packages/MSPEngine)
+[![GitHub release](https://img.shields.io/github/v/release/OneByJorah/msprex?color=f97316&label=release&logo=github)](https://github.com/OneByJorah/msprex/releases)
+[![PowerShell Gallery](https://img.shields.io/badge/PowerShell%20Gallery-msprex-009FFD?style=flat-square&logo=powershell&logoColor=white)](https://www.powershellgallery.com/packages/msprex)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?color=FFB300&logo=open-source-initiative&logoColor=FFB300)](https://opensource.org/licenses/MIT)
 
 ## Contributing
 
-[Open an issue](https://github.com/OneByJorah/MSPEngine/issues) to report a bug or request a feature.
+[Open an issue](https://github.com/OneByJorah/msprex/issues) to report a bug or request a feature.
 
 ## License
 

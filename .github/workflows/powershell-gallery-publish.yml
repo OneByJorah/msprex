@@ -13,4 +13,4 @@ jobs:
         uses: MacBookPro-ct/powershell-gallery-publish@v1
         with:
           api_key: ${{ secrets.PSGALLERY_API_KEY }}
-          module_path: MSPEngine/
+          module_path: msprex/
