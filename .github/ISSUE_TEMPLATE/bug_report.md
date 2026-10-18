@@ -22,7 +22,7 @@ What you expected to happen.
 **Screenshots / logs**
 If applicable, add screenshots or log output.
 
-### Environment
+## Environment
 
 - OS:
 - Browser/runtime version:
