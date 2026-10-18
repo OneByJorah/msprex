@@ -6,77 +6,72 @@
 
 **MSP automation engine — PowerShell-based remote management, scripted deployments, monitoring checks, and client provisioning for managed service providers.**
 
+*Formerly MSPEngine.*
+
 [![GitHub release](https://img.shields.io/github/v/release/OneByJorah/msprex?color=f97316&label=release&logo=github)](https://github.com/OneByJorah/msprex/releases)
-[![PowerShell Gallery](https://img.shields.io/badge/PowerShell%20Gallery-msprex-009FFD?style=flat-square&logo=powershell&logoColor=white)](https://www.powershellgallery.com/packages/msprex)
+[![CI](https://img.shields.io/github/actions/workflow/status/OneByJorah/msprex/ci.yml?color=FFB300&label=CI&logo=github)](https://github.com/OneByJorah/msprex/actions/workflows/ci.yml)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?color=FFB300&logo=open-source-initiative&logoColor=FFB300)](https://opensource.org/licenses/MIT)
 
-</div>
+![msprex demo dashboard](docs/screenshots/dashboard.png)
 
-![msprex screenshot](docs/assets/screenshot.png)
+</div>
 
 ## What This Is
 
-MSP automation engine — PowerShell-based remote management, scripted deployments, monitoring checks, and client provisioning for managed service providers.
+msprex is an MSP automation engine with two halves:
 
-## Quick Start
+1. **A PowerShell module** (`msprex/`) for remote host management from a Windows workstation — host info, scripted deployments, scheduled health checks, and client records against machines you administer.
+2. **A self-hosted demo dashboard** (`app/`) — a small Node service that renders the ops status board above. It ships with demo data and runs anywhere Docker runs, including the included compose file.
 
-### PowerShell Gallery
-
-```powershell
-Install-Module -Name msprex -Repository PSGallery
-Import-Module msprex
-```
-
-### Docker
+## Quick Start (dashboard)
 
 ```bash
 git clone https://github.com/OneByJorah/msprex.git
 cd msprex
-docker compose up -d
+cp .env.example .env   # optional; defaults are fine
+docker compose up -d --build
 ```
 
-### From Source
+Open `http://127.0.0.1:8080` — it binds to localhost only. Health: `curl http://127.0.0.1:8080/healthz` → `200`.
 
-```bash
+Environment (see `.env.example`): `HOST_PORT` (default `8080`), `DEMO_MODE` (default `true`), `PROJECT_NAME` (default `msprex`).
+
+## Quick Start (PowerShell module — Windows)
+
+The module targets Windows hosts (CIM / `Invoke-Command` against machines you administer). On a Windows PowerShell 5.1+ session:
+
+```powershell
 git clone https://github.com/OneByJorah/msprex.git
 cd msprex
 Import-Module ./msprex/msprex.psd1
+Get-Command -Module msprex
 ```
 
-## Features
-
-- **Self-hosted** — run on your own hardware
-- **Docker Compose** — full stack with one command
-- **PowerShell Gallery** — install via PSGallery
-- **Dark theme** — MSP-operations aesthetic
-
-- **Remote management** — PowerShell-based host management
-- **Scripted deployments** — automated software deployment
-- **Monitoring checks** — scheduled health and status checks
-- **Client provisioning** — new client onboarding automation
-- **PowerShell Gallery** — publish as module
-- **Dark theme** — MSP-operational aesthetic
+> **Note:** the module is Windows-only — it uses CIM sessions and PowerShell remoting that do not exist on Linux/macOS. The Docker dashboard above runs on any OS.
 
 ## Functions
 
 | Function | Description |
 | -------- | ----------- |
-| `Get-MSPHost` | Get host info from remote computer |
-| `Invoke-MSPDeploy` | Deploy script to remote computer |
+| `Get-MSPHost` | Get host info from a remote computer |
+| `Invoke-MSPDeploy` | Deploy a script to a remote computer |
 | `Test-MSPHealth` | Check host health (CPU, memory, status) |
-| `New-MSPClient` | Create new client record |
+| `New-MSPClient` | Create a new client record |
 
-## Package Badges
+## Repository Layout
 
-[![GitHub release](https://img.shields.io/github/v/release/OneByJorah/msprex?color=f97316&label=release&logo=github)](https://github.com/OneByJorah/msprex/releases)
-[![PowerShell Gallery](https://img.shields.io/badge/PowerShell%20Gallery-msprex-009FFD?style=flat-square&logo=powershell&logoColor=white)](https://www.powershellgallery.com/packages/msprex)
-[![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?color=FFB300&logo=open-source-initiative&logoColor=FFB300)](https://opensource.org/licenses/MIT)
+```
+msprex/        PowerShell module (manifest + psm1)
+app/           Demo dashboard (Node, no dependencies)
+install.sh     Linux/macOS helper (dashboard)
+install.ps1    Windows helper (module import + dashboard)
+docker-compose.yml
+```
 
 ## Contributing
 
-[Open an issue](https://github.com/OneByJorah/msprex/issues) to report a bug or request a feature.
+[Open an issue](https://github.com/OneByJorah/msprex/issues) for bugs or feature requests. PRs welcome — keep the demo data fictional.
 
 ## License
 
