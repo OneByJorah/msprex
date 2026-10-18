@@ -22,7 +22,7 @@
     Author = 'OneByJorah'
     CompanyName = 'JorahOne, LLC'
     Copyright = '2026 JorahOne, LLC'
-    ModuleName = 'MSPEngine'
+    ModuleName = 'msprex'
     PowerShellVersion = '5.1'
     FunctionsToExport = @('Get-MSPHost', 'Invoke-MSPDeploy', 'Test-MSPHealth', 'New-MSPClient')
     CmdletsToExport = @()
@@ -31,8 +31,8 @@
     PrivateData = @{
         PSData = @{
             Tags = @('msp', 'automation', 'powershell', 'monitoring', 'deployment', 'jorahone')
-            LicenseUri = 'https://github.com/OneByJorah/MSPEngine/blob/main/LICENSE'
-            ProjectUri = 'https://github.com/OneByJorah/MSPEngine'
+            LicenseUri = 'https://github.com/OneByJorah/msprex/blob/main/LICENSE'
+            ProjectUri = 'https://github.com/OneByJorah/msprex'
             ReleaseNotes = 'Initial release: MSP automation engine with remote management, deployment, monitoring, and client provisioning.'
         }
     }

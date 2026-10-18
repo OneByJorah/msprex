@@ -1,6 +1,6 @@
 ﻿<#
 .SYNOPSIS
-    MSPEngine — Windows 10/11 Provisioning & Debloat Utility
+    msprex — Windows 10/11 Provisioning & Debloat Utility
 .DESCRIPTION
     Downloads and executes the MSP-Ultra-Debloat script for Windows provisioning.
     Supports parameterized execution for remote technician scenarios.
@@ -23,7 +23,7 @@
     Download the debloat script without executing it.
 
 .EXAMPLE
-    .\install.ps1 -ScriptUrl "https://raw.githubusercontent.com/OneByJorah/MSPEngine/main/debloat/MSP-Ultra-Debloat.ps1"
+    .\install.ps1 -ScriptUrl "https://raw.githubusercontent.com/OneByJorah/msprex/main/debloat/MSP-Ultra-Debloat.ps1"
     Run from a custom script URL.
 
 .NOTES
@@ -33,7 +33,7 @@
 #>
 
 param(
-    [string]$ScriptUrl = "https://raw.githubusercontent.com/OneByJorah/MSPEngine/main/debloat/MSP-Ultra-Debloat.ps1",
+    [string]$ScriptUrl = "https://raw.githubusercontent.com/OneByJorah/msprex/main/debloat/MSP-Ultra-Debloat.ps1",
     [switch]$SkipDeploy,
     [string]$TempPath = "$env:TEMP\debloat.ps1",
     [string]$ExecutionPolicy = "RemoteSigned"
@@ -44,7 +44,7 @@ $osInfo = Get-CimInstance -ClassName Win32_OperatingSystem
 $psVersion = $PSVersionTable.PSVersion
 
 Write-Host "╔══════════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║           MSPEngine — Windows Provisioning      ║" -ForegroundColor Cyan
+Write-Host "║           msprex — Windows Provisioning      ║" -ForegroundColor Cyan
 Write-Host "╚══════════════════════════════════════════════════╝" -ForegroundColor Cyan
 Write-Host ""
 
@@ -91,7 +91,7 @@ if (-not $SkipDeploy) {
             exit 1
         }
         Write-Host ""
-        Write-Host "✓ MSPEngine completed successfully." -ForegroundColor Green
+        Write-Host "✓ msprex completed successfully." -ForegroundColor Green
         Write-Host "  A system restart is recommended to apply all changes." -ForegroundColor Yellow
     } catch {
         Write-Host "✗ Execution failed: $_" -ForegroundColor Red
