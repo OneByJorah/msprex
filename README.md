@@ -61,7 +61,7 @@ Import-Module ./MSPEngine/MSPEngine.psd1
 ## Functions
 
 | Function | Description |
-|----------|-------------|
+| -------- | ----------- |
 | `Get-MSPHost` | Get host info from remote computer |
 | `Invoke-MSPDeploy` | Deploy script to remote computer |
 | `Test-MSPHealth` | Check host health (CPU, memory, status) |

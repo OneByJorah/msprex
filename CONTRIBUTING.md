@@ -26,4 +26,4 @@ Thanks for taking the time to contribute! Every island in the JorahOne archipela
 
 ## Questions?
 
-Open an [issue](https://github.com/OneByJorah/MSPEngine/issues) or reach out at info@jorahone.com.
+Open an [issue](https://github.com/OneByJorah/MSPEngine/issues) or reach out at `info@jorahone.com`.
