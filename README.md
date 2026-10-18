@@ -31,7 +31,7 @@ git clone https://github.com/OneByJorah/msprex.git
 cd msprex
 cp .env.example .env   # optional; defaults are fine
 docker compose up -d --build
-```
+```text
 
 Open `http://127.0.0.1:8080` — it binds to localhost only. Health: `curl http://127.0.0.1:8080/healthz` → `200`.
 
@@ -46,7 +46,7 @@ git clone https://github.com/OneByJorah/msprex.git
 cd msprex
 Import-Module ./msprex/msprex.psd1
 Get-Command -Module msprex
-```
+```text
 
 > **Note:** the module is Windows-only — it uses CIM sessions and PowerShell remoting that do not exist on Linux/macOS. The Docker dashboard above runs on any OS.
 
@@ -61,13 +61,13 @@ Get-Command -Module msprex
 
 ## Repository Layout
 
-```
+```text
 msprex/        PowerShell module (manifest + psm1)
 app/           Demo dashboard (Node, no dependencies)
 install.sh     Linux/macOS helper (dashboard)
 install.ps1    Windows helper (module import + dashboard)
 docker-compose.yml
-```
+```text
 
 ## Contributing
 
