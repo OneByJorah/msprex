@@ -13,6 +13,13 @@ on:
   push:
     tags:
       - 'v*.*.*'
+  pull_request:
+    # Package on changes that can affect the installer, so the build and the
+    # install smoke test are proven before the change reaches main.
+    paths:
+      - 'installer/**'
+      - 'msprex/**'
+      - '.github/workflows/release.yml'
   workflow_dispatch:
     inputs:
       version:
@@ -48,17 +55,24 @@ jobs:
         id: version
         shell: pwsh
         run: |
-          $raw = if ('${{ github.event_name }}' -eq 'workflow_dispatch') { '${{ inputs.version }}' } else { '${{ github.ref_name }}' }
+          $manifest = (Select-String -Path msprex/msprex.psd1 -Pattern "^\s*ModuleVersion\s*=\s*'([0-9.]+)'").Matches[0].Groups[1].Value
+          $event = '${{ github.event_name }}'
+          # A pull request has no release version of its own: package what the
+          # manifest says and let a tag or dispatch assert the real number.
+          $raw = switch ($event) {
+            'workflow_dispatch' { '${{ inputs.version }}' }
+            'pull_request' { $manifest }
+            default { '${{ github.ref_name }}' }
+          }
           $version = $raw.TrimStart('v')
           if ($version -notmatch '^\d+\.\d+\.\d+$') {
             throw "Version '$raw' is not major.minor.build; MSI requires numeric versions."
           }
-          $manifest = (Select-String -Path msprex/msprex.psd1 -Pattern "^\s*ModuleVersion\s*=\s*'([0-9.]+)'").Matches[0].Groups[1].Value
           if ($manifest -ne $version) {
-            throw "Tag/input version $version does not match ModuleVersion $manifest in msprex.psd1. Bump the manifest first."
+            throw "Requested version $version does not match ModuleVersion $manifest in msprex.psd1. Bump the manifest first."
           }
           "version=$version" >> $env:GITHUB_OUTPUT
-          Write-Host "packaging msprex $version"
+          Write-Host "packaging msprex $version ($event)"
 
       - name: Install WiX ${{ env.WIX_VERSION }}
         shell: pwsh
@@ -195,6 +209,8 @@ jobs:
   publish:
     name: Attach to release
     needs: package
+    # Never touch a release from a pull request build.
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
