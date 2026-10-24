@@ -104,15 +104,16 @@ jobs:
           MSPREX_SIGN_PASSWORD: ${{ secrets.WINDOWS_CERT_PASSWORD }}
           PFX_BASE64: ${{ secrets.WINDOWS_CERT_PFX_BASE64 }}
         run: |
-          $buildArgs = @{
-            WixBin  = $env:WIX
-            Version = '${{ steps.version.outputs.version }}'
-          }
+          # Run the build scripts as child processes: $LASTEXITCODE from a dotted
+          # or call-operator .ps1 invocation is whatever the previous native
+          # command left behind, which is not this script's result.
+          $version = '${{ steps.version.outputs.version }}'
+          $common = @('-NoProfile', '-File', './installer/build.ps1', '-WixBin', $env:WIX, '-Version', $version)
           if ('${{ steps.signing.outputs.enabled }}' -eq 'true') {
             $pfx = Join-Path $env:RUNNER_TEMP 'codesign.pfx'
             [IO.File]::WriteAllBytes($pfx, [Convert]::FromBase64String($env:PFX_BASE64))
             try {
-              & ./installer/build.ps1 @buildArgs -SignPfx $pfx -TimestampUrl 'http://timestamp.digicert.com'
+              pwsh @common -SignPfx $pfx -TimestampUrl 'http://timestamp.digicert.com'
               if ($LASTEXITCODE -ne 0) { throw "build.ps1 failed with exit code $LASTEXITCODE" }
             }
             finally {
@@ -120,7 +121,7 @@ jobs:
             }
           }
           else {
-            & ./installer/build.ps1 @buildArgs
+            pwsh @common
             if ($LASTEXITCODE -ne 0) { throw "build.ps1 failed with exit code $LASTEXITCODE" }
           }
 
@@ -128,8 +129,8 @@ jobs:
         shell: pwsh
         run: |
           $msi = Get-ChildItem dist/msprex-*-x64.msi | Select-Object -First 1
-          ./installer/verify-msi.ps1 -Msi $msi.FullName -SourceDir msprex -WixBin $env:WIX
-          if ($LASTEXITCODE -ne 0) { throw "MSI verification failed" }
+          pwsh -NoProfile -File ./installer/verify-msi.ps1 -Msi $msi.FullName -SourceDir msprex -WixBin $env:WIX
+          if ($LASTEXITCODE -ne 0) { throw "MSI verification failed with exit code $LASTEXITCODE" }
 
       - name: Smoke test the packaged install
         shell: pwsh
