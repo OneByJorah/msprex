@@ -15,3 +15,7 @@ Thumbs.db
 
 # OneByJorah portfolio tooling
 .venv-screenshot/
+
+# MSI build output (installer/build.ps1)
+dist/
+installer/obj/

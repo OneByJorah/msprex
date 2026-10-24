@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  msprex — Windows Installer package for the PowerShell module.
+
+  Installs the module into %ProgramFiles%\WindowsPowerShell\Modules\msprex, which is
+  already on PSModulePath for 64-bit Windows PowerShell, so `Import-Module msprex`
+  works after install without touching the user's profile.
+
+  Build (WiX 3.14):
+    candle -dVersion=1.0.0 -dSourceDir=..\msprex -dRepoRoot=.. -out obj\ installer\msprex.wxs
+    light  -out dist\msprex-1.0.0-x64.msi obj\msprex.wixobj
+
+  UpgradeCode must never change: it is what lets a newer MSI replace an older one
+  instead of stacking side-by-side copies in Add/Remove Programs.
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product
+      Id="*"
+      Name="msprex"
+      Language="1033"
+      Version="$(var.Version)"
+      Manufacturer="JorahOne, LLC"
+      UpgradeCode="C3B2E2B6-CEBA-4A38-ADD3-5BDFE00248C4">
+
+    <Package InstallerVersion="500"
+             Compressed="yes"
+             InstallScope="perMachine"
+             Platform="x64"
+             Description="MSP automation module for Windows PowerShell" />
+
+    <!-- Replace an older install cleanly; block downgrades instead of silently allowing them. -->
+    <MajorUpgrade DowngradeErrorMessage="A newer version of msprex is already installed. Uninstall it first if you need to downgrade." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFiles64Folder">
+        <Directory Id="WindowsPowerShellDir" Name="WindowsPowerShell">
+          <Directory Id="ModulesDir" Name="Modules">
+            <Directory Id="MSPREXDIR" Name="msprex">
+
+              <Component Id="ModuleManifest" Guid="3394D868-DADE-46E5-9D95-387E7128BCB0" Win64="yes">
+                <File Id="msprexPsd1"
+                      Name="msprex.psd1"
+                      Source="$(var.SourceDir)\msprex.psd1"
+                      KeyPath="yes" />
+              </Component>
+
+              <Component Id="ModuleScript" Guid="C1B83B8F-7DFF-43B1-B3AC-B9B939D03C42" Win64="yes">
+                <File Id="msprexPsm1"
+                      Name="msprex.psm1"
+                      Source="$(var.SourceDir)\msprex.psm1"
+                      KeyPath="yes" />
+              </Component>
+
+              <Component Id="LicenceFile" Guid="F7C4E67E-0C6B-4617-8CB0-0F691428110C" Win64="yes">
+                <File Id="licenceTxt"
+                      Name="LICENSE"
+                      Source="$(var.RepoRoot)\LICENSE"
+                      KeyPath="yes" />
+              </Component>
+
+            </Directory>
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <Feature Id="MainFeature" Title="msprex PowerShell module" Level="1" Display="expand">
+      <ComponentRef Id="ModuleManifest" />
+      <ComponentRef Id="ModuleScript" />
+      <ComponentRef Id="LicenceFile" />
+    </Feature>
+
+    <!-- Add/Remove Programs: point people somewhere useful.
+         ARPNOMODIFY / ARPNOREPAIR come from WixUI_Minimal; setting them here
+         duplicates the symbols and fails the link. -->
+    <Property Id="ARPHELPLINK" Value="https://github.com/OneByJorah/msprex" />
+    <Property Id="ARPCOMMENTS" Value="Installs the msprex PowerShell module for all users." />
+
+    <UIRef Id="WixUI_Minimal" />
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.RepoRoot)\installer\LICENSE.rtf" />
+  </Product>
+</Wix>

@@ -50,6 +50,28 @@ Get-Command -Module msprex
 
 > **Note:** the module is Windows-only — it uses CIM sessions and PowerShell remoting that do not exist on Linux/macOS. The Docker dashboard above runs on any OS.
 
+### Install the Windows package (MSI)
+
+Download `msprex-<version>-x64.msi` from [Releases](https://github.com/OneByJorah/msprex/releases). It installs the module for all users into `%ProgramFiles%\WindowsPowerShell\Modules\msprex`, which is already on `PSModulePath`, so no profile edits are needed:
+
+```powershell
+msiexec /i msprex-1.0.0-x64.msi /qn
+Import-Module msprex
+Get-Command -Module msprex
+```
+
+Remove it the same way: `msiexec /x msprex-1.0.0-x64.msi /qn`. Upgrades replace the previous version in place — the UpgradeCode is fixed, so installs do not stack.
+
+Every release states its signing status. Without a `WINDOWS_CERT_PFX_BASE64` secret the package is **unsigned**, so SmartScreen warns on first run (More info → Run anyway); `SHA256SUMS.txt` in the release is then the only integrity check. Build the package locally:
+
+```powershell
+# WiX 3.14 binaries on PATH, or pass -WixBin <dir>
+pwsh -File installer\build.ps1
+pwsh -File installer\verify-msi.ps1 -Msi dist\msprex-1.0.0-x64.msi -SourceDir msprex -WixBin <dir>
+```
+
+`build.ps1` refuses to package a version that does not match `ModuleVersion` in `msprex/msprex.psd1`, and `verify-msi.ps1` inspects the built MSI without installing it: product identity, install layout, and the SHA-256 of each file inside the embedded cabinet.
+
 ## Functions
 
 | Function | Description |
@@ -64,6 +86,7 @@ Get-Command -Module msprex
 ```text
 msprex/        PowerShell module (manifest + psm1)
 app/           Demo dashboard (Node, no dependencies)
+installer/     WiX source for the MSI, plus build and verification scripts
 install.sh     Linux/macOS helper (dashboard)
 install.ps1    Windows helper (module import + dashboard)
 docker-compose.yml

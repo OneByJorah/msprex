@@ -22,7 +22,7 @@
     Author = 'OneByJorah'
     CompanyName = 'JorahOne, LLC'
     Copyright = '2026 JorahOne, LLC'
-    ModuleName = 'msprex'
+    RootModule = 'msprex.psm1'
     PowerShellVersion = '5.1'
     FunctionsToExport = @('Get-MSPHost', 'Invoke-MSPDeploy', 'Test-MSPHealth', 'New-MSPClient')
     CmdletsToExport = @()
